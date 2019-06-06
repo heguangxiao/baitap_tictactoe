@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="number" id="needCaro" value="3"/><br/>
+<input type="button" id="caroshow" value="Caro" onclick="showcaro();"/><br/>
+<div id="showCaro"></div>
+
+<script>
+    let caro = document.getElementById('needCaro');
+    let showDiv = document.getElementById('showCaro');
+    let board = [];
+    let data = "";
+    let ffflag = 0;
+
+    function reloadIndex() {
+        location.reload();
+    }
+
+    function showcaro() {
+
+        if (data != ""){
+            reloadIndex();
+        }
+        let n = parseInt(caro.value);
+        for (let i = 0; i < n; i++) {
+            board[i] = [];
+            for (let j = 0; j < n; j++){
+                board[i].push('.');
+            }
+        }
+
+        for (let i = 0; i < n; i++) {
+            data += "<br/>";
+            for (let j = 0; j < n; j++) {
+                data +='<input type="button" id="caroshow'+i+j+'" value="." onclick="showplay('+''+i+''+j+');"/>'+ '&nbsp;&nbsp;';
+                //data += board[i][j] + "&nbsp;&nbsp;";
+            }
+        }
+
+        data += "<br/><br/>"
+        showCaro.innerHTML = data;
+    }
+    function showplay(ij) {
+
+        if(parseInt(ij)<10){
+            ij = '0'+ij;
+        }
+
+        let bien = document.getElementById('caroshow'+ij);
+        let ck = ij.toString();
+
+        if(bien.value == '.'){
+            if(ffflag % 2 == 0 ){
+                ffflag++;
+                bien.value = 'o';
+                board[ck[0]][ck[1]] = 'o';
+            }else{
+                ffflag++;
+                bien.value = 'x';
+                board[ck[0]][ck[1]] = 'x';
+            }
+        }
+        checkCaroCheo(ij);
+        checkCarongang(ij);
+        checkCaroDoc(ij);
+
+    }
+    
+    function checkCarongang(ij) {
+
+        let ck = ij.toString();
+
+        if(board[ck[0]][ck[1]] === 'o'){
+            for (i=0;i<board.length;i++){
+                if (board[ck[0]][i] === 'o' && board[ck[0]][i - 1] === board[ck[0]][i] && board[ck[0]][i] === board[ck[0]][i + 1]) {
+                    alert('Nguoi choi "o" da thang');
+                    break;
+                }
+            }
+        }
+
+        if(board[ck[0]][ck[1]] === 'x'){
+            for (i=0;i<board.length;i++){
+                if (board[ck[0]][i] === 'x' && board[ck[0]][i - 1] === board[ck[0]][i] && board[ck[0]][i] === board[ck[0]][i + 1]) {
+                    alert('Nguoi choi "x" da thang');
+                    break;
+                }
+            }
+        }
+
+    }
+
+    function checkCaroDoc(ij) {
+        let ck = ij.toString();
+            for (let i = 0; i < board.length; i++) {
+                if (i !== 0) {
+                    if (board[i][ck[1]] === board[i - 1][ck[1]] && board[i][ck[1]] === board[i + 1][ck[1]] ) {
+                        if (board[i][ck[1]] === 'o') {
+                            alert('Nguoi choi "o" da thang');
+                            break;
+                        } else if (board[i][ck[1]] === 'x') {
+                            alert('Nguoi choi "x" da thang');
+                            break;
+                        }
+                    }
+                }
+            }
+    }
+    
+    function checkCaroCheo(ij) {
+        let ck = ij.toString();
+
+        if (board[ck[0]][ck[1]] === board[parseInt(ck[0])+1][parseInt(ck[1])+1] && board[ck[0]][ck[1]] === board[parseInt(ck[0])+2][parseInt(ck[1])+2]){
+            alert('ok');
+        }else if (board[ck[0]][ck[1]] === board[parseInt(ck[0])+1][parseInt(ck[1])+1] && board[ck[0]][ck[1]] === board[parseInt(ck[0])-1][parseInt(ck[1])-1]){
+            alert('ok');
+        }else if (board[ck[0]][ck[1]] === board[parseInt(ck[0])-1][parseInt(ck[1])+1] && board[ck[0]][ck[1]] === board[parseInt(ck[0])-2][parseInt(ck[1])+2]){
+            alert('ok');
+        }else if (board[ck[0]][ck[1]] === board[parseInt(ck[0])-1][parseInt(ck[1])-1] && board[ck[0]][ck[1]] === board[parseInt(ck[0])-2][parseInt(ck[1])-2]){
+            alert('ok');
+        }else if (board[ck[0]][ck[1]] === board[parseInt(ck[0])+1][parseInt(ck[1])-1] && board[ck[0]][ck[1]] === board[parseInt(ck[0])+2][parseInt(ck[1])-2]){
+            alert('ok');
+        }else if (board[ck[0]][ck[1]] === board[parseInt(ck[0])+1][parseInt(ck[1])-1] && board[ck[0]][ck[1]] === board[parseInt(ck[0])-1][parseInt(ck[1])+1]){
+            alert('ok');
+        }else{
+
+        }
+    }
+
+</script>
+</body>
+</html>
